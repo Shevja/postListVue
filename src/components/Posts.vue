@@ -1,6 +1,6 @@
 <script setup>
 import PostsList from './PostsList.vue'
-import { reactive, ref } from 'vue'
+import { reactive, ref, watch, computed } from 'vue'
 
 const postsList = reactive([
     {
@@ -9,17 +9,16 @@ const postsList = reactive([
     },
     {
         id: 1,
-        title: 'hello world'
+        title: 'hello world2'
     },
     {
         id: 2,
-        title: 'hello world'
+        title: 'hello world3'
     },
 ])
 
 function addItem(itemTitle) {
     postsList.push({
-        id: postsList.length + 1,
         title: itemTitle
     })
 }
@@ -30,8 +29,21 @@ function removeItem(itemId) {
 }
 
 function editItem(itemId, itemTitle) {
+    const post = postsList.find(post => post.id === itemId)
+    post.title = itemTitle
     console.log('edit', itemId, itemTitle)
 }
+
+watch(
+    () => postsList.length,
+    () => {
+        console.log('watch', postsList.length)
+        postsList.forEach((post, ind) => {
+            post.id = ind
+        })
+    }
+)
+
 </script>
 
 <template>

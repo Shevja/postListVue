@@ -12,44 +12,66 @@ const props = defineProps({
 })
 
 const newPost = reactive({
+    id: 0,
     title: '',
     error: ''
 })
 
-function addPost() {
-    if (newPost.title !== '') {
-        emit('addNewPost', newPost.title)
-        newPost.title = ''
-    } else {
+const inputMode = ref('addPost')
+
+function validateInput() {
+    if (newPost.title === '') {
         newPost.error = 'Заголовок не может быть пустым'
     }
 }
 
 function editPost(id, title) {
-    emit('editPost', id, title)
+    inputMode.value = 'editPost'
+    newPost.title = title
+    newPost.id = id
 }
 
-function removePost(id) {
+function emitAddPost() {
+    if (newPost.error === '') {
+        emit('addNewPost', newPost.title)
+        newPost.title = ''
+    }
+}
+
+function emitEditPost() {
+    if (newPost.error === '') {
+        emit('editPost', newPost.id, newPost.title)
+        newPost.id = 0
+        newPost.title = ''
+        inputMode.value = 'addPost'
+    }
+}
+
+function emitRemovePost(id) {
     emit('removePost', id)
 }
 
 </script>
 
 <template>
+    {{ props.posts }}
     <div class="posts">
         <div class="posts-interface">
             <div class="posts-interface__input">
-                <input @focus="newPost.error = ''" v-model.trim="newPost.title" type="text">
+                <input @focus="newPost.error = ''" @input="validateInput" v-model.trim="newPost.title" type="text">
                 <span v-if="newPost.error" class="">
                     {{ newPost.error }}
                 </span>
             </div>
-            <button @click="addPost" class="posts-interface__button">+</button>
+            <button v-if="inputMode === 'addPost'" @click="emitAddPost" class="posts-interface__button">+</button>
+            <button v-else-if="inputMode === 'editPost'" @click="emitEditPost" class="posts-interface__button">
+                \/
+            </button>
         </div>
 
         <ul class="posts-list">
             <li v-for="post in props.posts" :key="post.id">
-                <PostCard :id="post.id" :title="post.title" @removePost="removePost" @editPost="editPost" />
+                <PostCard :id="post.id" :title="post.title" @removePost="emitRemovePost" @editPost="editPost" />
             </li>
         </ul>
     </div>
@@ -96,10 +118,12 @@ function removePost(id) {
         &__button {
             font-size: 30px;
             width: 20%;
+            transition: background-color .1s, color .1s, border-color .1s;
 
             &:hover {
                 cursor: pointer;
-                background-color: rgb(96, 136, 96);
+                background-color: #608860;
+                border-color: #608860;
                 color: #fff;
             }
         }

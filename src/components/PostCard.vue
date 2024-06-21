@@ -71,21 +71,34 @@ p {
 
         &__button {
             padding: 3px 10px;
+
             transition:
                 color .1s,
                 border-color .1s,
                 background-color .1s;
 
-            &_edit:hover {
-                background-color: #224a92;
-                border-color: #224a92;
-                color: #fff;
+            &_edit {
+                // background-color: #3e5e99;
+                // border-color: #3e5e99;
+                // color: #fff;
+
+                &:hover {
+                    background-color: #1e54b8;
+                    border-color: #1e54b8;
+                    color: #fff;
+                }
             }
 
-            &_remove:hover {
-                background-color: #d35757;
-                border-color: #d35757;
-                color: #fff;
+            &_remove {
+                // background-color: #b96767;
+                // border-color: #b96767;
+                // color: #fff;
+
+                &:hover {
+                    background-color: #df4444;
+                    border-color: #df4444;
+                    color: #fff;
+                }
             }
         }
     }
