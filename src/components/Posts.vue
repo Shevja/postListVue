@@ -10,8 +10,12 @@ onBeforeMount(() => {
     if (!localStorage.getItem('postsList')) {
         getPostList()
     } else {
-        let stringifiedPostsList = localStorage.getItem('postsList')
-        postsList.push(...JSON.parse(stringifiedPostsList))
+        try {
+            let stringifiedPostsList = localStorage.getItem('postsList')
+            postsList.push(...JSON.parse(stringifiedPostsList))
+        } catch {
+            getPostList()
+        }
     }
 })
 
@@ -36,9 +40,11 @@ function removeItem(itemId) {
 }
 
 // Обновляет заголовок поста в postsList
+// и сохраняет в localStorage
 function editItem(itemId, itemTitle) {
     const post = postsList.find(post => post.id === itemId)
     post.title = itemTitle
+    localStorage.setItem('postsList', JSON.stringify(postsList))
 }
 
 // Следит за изменением длины postsList
