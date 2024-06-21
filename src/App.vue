@@ -8,14 +8,4 @@ import Posts from './components/Posts.vue'
 	</main>
 </template>
 
-<style lang="scss" scoped>
-main {
-	display: flex;
-	align-items: center;
-	flex-direction: column;
-
-	& ul {
-		list-style: none;
-	}
-}
-</style>
+<style lang="scss" scoped></style>

@@ -23,21 +23,21 @@ function remove() {
 
 <template>
     <div class="post-card">
-        <div class="post-card-content">
-            <p class="post-card-content__title">
-                {{ title }}
-            </p>
-        </div>
-        <span class="post-card__id">
-            id: {{ id }}
-        </span>
-        <div class="post-card-buttons">
-            <button @click="edit" class="post-card-buttons__button post-card-buttons__button_edit">
-                Редактировать
-            </button>
-            <button @click="remove" class="post-card-buttons__button post-card-buttons__button_remove">
-                Удалить
-            </button>
+        <p class="post-card__title">
+            {{ title }}
+        </p>
+        <div class="post-card__bottom">
+            <span class="post-card__id">
+                id: {{ id }}
+            </span>
+            <div class="post-card-buttons">
+                <button @click="edit" class="post-card-buttons__button post-card-buttons__button_edit">
+                    Редактировать
+                </button>
+                <button @click="remove" class="post-card-buttons__button post-card-buttons__button_remove">
+                    Удалить
+                </button>
+            </div>
         </div>
     </div>
 </template>
@@ -65,24 +65,23 @@ p {
         font-size: 12px;
     }
 
-    &-content {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
+    &__title {
         width: 100%;
+        font-size: 20px;
+    }
 
-        &__title {
-            font-size: 20px;
-        }
-
-        &__body {
-            font-size: 14px;
-        }
+    &__bottom {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
     }
 
     &-buttons {
         display: flex;
-        margin-left: auto;
+        flex-wrap: wrap;
         gap: 10px;
 
         &__button {

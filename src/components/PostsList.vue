@@ -70,7 +70,8 @@ function emitRemovePost(id) {
     <div class="posts">
         <form class="posts-interface" @submit.prevent="submitHandler">
             <div class="posts-interface__input">
-                <input @focus="newPost.error = ''" @input="validateInput" v-model.trim="newPost.title" type="text">
+                <input @focus="newPost.error = ''" @input="validateInput" v-model.trim="newPost.title" type="text"
+                    placeholder="Введите название нового заголовка">
 
                 <span v-if="newPost.error" class="">
                     {{ newPost.error }}
@@ -94,9 +95,6 @@ function emitRemovePost(id) {
 
 <style lang="scss" scoped>
 .posts {
-    padding: 40px 0;
-    max-width: 600px;
-    width: 100%;
 
     &-interface {
         display: flex;
@@ -153,7 +151,8 @@ function emitRemovePost(id) {
         &__button {
             order: 1;
             font-size: 30px;
-            width: 20%;
+            width: 15%;
+            min-width: 43px;
             transition: background-color .1s, color .1s, border-color .1s;
 
             &:hover {

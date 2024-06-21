@@ -58,7 +58,11 @@ watch(
 </script>
 
 <template>
-    <PostsList :posts="postsList" @addPost="addItem" @removePost="removeItem" @editPost="editItem" />
+    <section class="section">
+        <div class="container">
+            <PostsList :posts="postsList" @addPost="addItem" @removePost="removeItem" @editPost="editItem" />
+        </div>
+    </section>
 </template>
 
 <style lang="scss"></style>

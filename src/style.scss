@@ -1,0 +1,66 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: "JetBrains Mono", monospace;
+}
+
+textarea,
+input {
+    border: 1px solid #bbb;
+    background-color: transparent;
+    font-size: 16px;
+    padding: 10px;
+
+    &:focus-visible {
+        outline: none;
+    }
+}
+
+button {
+    border: 1px solid #bbb;
+    background-color: transparent;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+ul {
+    list-style: none;
+}
+
+.section {
+    padding: 40px 0;
+}
+
+.container {
+    padding: 0 20px;
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+@font-face {
+    font-family: "JetBrains Mono";
+    src:
+        local("JetBrains Mono Bold"),
+        local("JetBrainsMono-Bold"),
+        url("@/assets/fonts/JetBrainsMono-Bold.woff2") format("woff2"),
+        url("@/assets/fonts/JetBrainsMono-Bold.woff") format("woff");
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "JetBrains Mono";
+    src:
+        local("JetBrains Mono Regular"),
+        local("JetBrainsMono-Regular"),
+        url("@/assets/fonts/JetBrainsMono-Regular.woff2") format("woff2"),
+        url("@/assets/fonts/JetBrainsMono-Regular.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
