@@ -2,7 +2,7 @@
 import { ref, reactive } from 'vue'
 import PostCard from './PostCard.vue'
 
-const emit = defineEmits(['addNewPost', 'removePost', 'editPost'])
+const emit = defineEmits(['addPost', 'removePost', 'editPost'])
 
 const props = defineProps({
     posts: {
@@ -14,39 +14,52 @@ const props = defineProps({
 const newPost = reactive({
     id: 0,
     title: '',
-    error: ''
+    error: '',
 })
 
+// Переключатель для поля ввода
+// addPost - режим добавления нового поста
+// editPost - режим редактирования поста
 const inputMode = ref('addPost')
 
+// Проверяет ошибки поля ввода
 function validateInput() {
     if (newPost.title === '') {
-        newPost.error = 'Заголовок не может быть пустым'
+        newPost.error = 'Заголовок поста не может быть пустым'
     }
 }
 
-function editPost(id, title) {
+// Выполняет проверки на ошибку через validateInput
+// Проверяет есть ли ошибки и отправляет соответсвующее inputMode событие
+// Затем обнуляет поле инпута и индентификатор поста
+function submitHandler() {
+    validateInput()
+
+    if (newPost.error !== '') {
+        return
+    }
+
+    if (inputMode.value === 'addPost') {
+        emit('addPost', newPost.title)
+    }
+    else if (inputMode.value === 'editPost') {
+        emit('editPost', newPost.id, newPost.title)
+        newPost.id = 0
+        inputMode.value = 'addPost'
+    }
+
+    newPost.title = ''
+}
+
+// Подставляет в поле ввода заголовок поста 
+// и передает индентификатор поста в обьект newPost
+function editPostHandler(id, title) {
     inputMode.value = 'editPost'
     newPost.title = title
     newPost.id = id
 }
 
-function emitAddPost() {
-    if (newPost.error === '') {
-        emit('addNewPost', newPost.title)
-        newPost.title = ''
-    }
-}
-
-function emitEditPost() {
-    if (newPost.error === '') {
-        emit('editPost', newPost.id, newPost.title)
-        newPost.id = 0
-        newPost.title = ''
-        inputMode.value = 'addPost'
-    }
-}
-
+// emits
 function emitRemovePost(id) {
     emit('removePost', id)
 }
@@ -54,24 +67,26 @@ function emitRemovePost(id) {
 </script>
 
 <template>
-    {{ props.posts }}
     <div class="posts">
-        <div class="posts-interface">
+        <form class="posts-interface" @submit.prevent="submitHandler">
             <div class="posts-interface__input">
                 <input @focus="newPost.error = ''" @input="validateInput" v-model.trim="newPost.title" type="text">
+
                 <span v-if="newPost.error" class="">
                     {{ newPost.error }}
                 </span>
             </div>
-            <button v-if="inputMode === 'addPost'" @click="emitAddPost" class="posts-interface__button">+</button>
-            <button v-else-if="inputMode === 'editPost'" @click="emitEditPost" class="posts-interface__button">
-                \/
+            <button class="posts-interface__button">
+                <span v-if="inputMode === 'addPost'">+</span>
+                <span v-else-if="inputMode === 'editPost'">
+                    &#10003
+                </span>
             </button>
-        </div>
+        </form>
 
         <ul class="posts-list">
             <li v-for="post in props.posts" :key="post.id">
-                <PostCard :id="post.id" :title="post.title" @removePost="emitRemovePost" @editPost="editPost" />
+                <PostCard :id="post.id" :title="post.title" @removePost="emitRemovePost" @editPost="editPostHandler" />
             </li>
         </ul>
     </div>
@@ -80,14 +95,19 @@ function emitRemovePost(id) {
 <style lang="scss" scoped>
 .posts {
     padding: 40px 0;
-    max-width: 500px;
+    max-width: 600px;
     width: 100%;
 
     &-interface {
         display: flex;
+        flex-wrap: wrap;
         gap: 10px;
         width: 100%;
         margin-bottom: 10px;
+
+        width: 100%;
+        gap: 10px;
+        display: flex;
 
         &__input {
             display: flex;
@@ -95,12 +115,27 @@ function emitRemovePost(id) {
             width: 100%;
             position: relative;
 
-            & input {
+            &_textarea {
+                order: 3;
+                flex: none;
+
+                textarea {
+                    resize: vertical;
+                    height: 120px;
+                    max-height: 180px;
+                    min-height: 43px;
+                }
+            }
+
+            input,
+            textarea {
                 width: 100%;
-                border: 1px solid #bbb;
-                background-color: transparent;
-                font-size: 16px;
-                padding: 10px;
+                transition: border-color .1s;
+
+                &:hover,
+                &:focus {
+                    border-color: #62606a;
+                }
             }
 
             span {
@@ -116,6 +151,7 @@ function emitRemovePost(id) {
         }
 
         &__button {
+            order: 1;
             font-size: 30px;
             width: 20%;
             transition: background-color .1s, color .1s, border-color .1s;

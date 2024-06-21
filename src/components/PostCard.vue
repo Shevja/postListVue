@@ -13,7 +13,7 @@ const props = defineProps({
 })
 
 function edit() {
-    emit('editPost', props.id, props.title)
+    emit('editPost', props.id, props.title, props.body)
 }
 
 function remove() {
@@ -23,12 +23,14 @@ function remove() {
 
 <template>
     <div class="post-card">
+        <div class="post-card-content">
+            <p class="post-card-content__title">
+                {{ title }}
+            </p>
+        </div>
         <span class="post-card__id">
-            {{ id }}
+            id: {{ id }}
         </span>
-        <p class="post-card__title">
-            {{ title }}
-        </p>
         <div class="post-card-buttons">
             <button @click="edit" class="post-card-buttons__button post-card-buttons__button_edit">
                 Редактировать
@@ -53,21 +55,35 @@ p {
     border: 1px solid #bbb;
     padding: 10px;
     gap: 10px;
+    transition: border-color .1s;
 
-    &__id {
-        font-weight: bold;
+    &:hover {
+        border-color: #62606a;
     }
 
-    &__title {
-        font-size: 20px;
+    &__id {
+        font-size: 12px;
+    }
+
+    &-content {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+
+        &__title {
+            font-size: 20px;
+        }
+
+        &__body {
+            font-size: 14px;
+        }
     }
 
     &-buttons {
         display: flex;
         margin-left: auto;
         gap: 10px;
-        width: 100%;
-        flex: none;
 
         &__button {
             padding: 3px 10px;
@@ -78,25 +94,25 @@ p {
                 background-color .1s;
 
             &_edit {
-                // background-color: #3e5e99;
-                // border-color: #3e5e99;
+                // background-color: #3a578d33;
+                // border-color: #b5b5b5;
                 // color: #fff;
 
                 &:hover {
-                    background-color: #1e54b8;
-                    border-color: #1e54b8;
+                    background-color: #3a578d;
+                    border-color: #3a578d;
                     color: #fff;
                 }
             }
 
             &_remove {
-                // background-color: #b96767;
-                // border-color: #b96767;
+                // background-color: #a74e4e33;
+                // border-color: #b5b5b5;
                 // color: #fff;
 
                 &:hover {
-                    background-color: #df4444;
-                    border-color: #df4444;
+                    background-color: #a74e4e;
+                    border-color: #a74e4e;
                     color: #fff;
                 }
             }
